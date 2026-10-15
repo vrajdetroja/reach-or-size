@@ -1,0 +1,139 @@
+# Transcribed from the paper, not from any code.
+# Source: Luo, Shi & Wu, arXiv 2502.09263v3 (ICML 2025), Appendix A.3, Tables 9 and 13.
+# Baselines: Tönshoff et al., arXiv 2309.00367v2, Table 2 (Peptides-Func hyperparameters).
+# Search space common to all GNN+ runs (Sec. 4): AdamW, lr in {1e-4, 5e-4, 1e-3},
+# dropout in {0.05, 0.1, 0.15, 0.2, 0.3}, layers 3..20, epoch limit 2000, 5 seeds.
+# Every field marked "unstated" is an ambiguity tracked in AMBIGUITIES.md.
+
+gcn_plus:
+  peptides-func:          # Table 9
+    layers: 3
+    edge_feature_module: true
+    norm: batchnorm
+    dropout: 0.2
+    residual: false
+    ffn: false
+    pe: rwse-32
+    hidden_dim: 275
+    pooling: mean
+    batch_size: 16
+    lr: 0.001
+    epochs: 300
+    warmup_epochs: 5
+    weight_decay: 0.0
+    params_reported: 507351
+    sec_per_epoch_3090: 6.9
+    target: {metric: AP, mean: 0.7261, std: 0.0067}           # Table 3
+    target_no_pe: {metric: AP, mean: 0.7069, std: 0.0093}     # Table 6, (-) PE
+  peptides-struct:        # Table 9
+    layers: 5
+    edge_feature_module: false   # note: no edge features on -struct
+    norm: batchnorm
+    dropout: 0.2
+    residual: false
+    ffn: false
+    pe: rwse-32
+    hidden_dim: 255
+    pooling: mean
+    batch_size: 32
+    lr: 0.001
+    epochs: 300
+    warmup_epochs: 5
+    weight_decay: 0.0
+    params_reported: 506127
+    sec_per_epoch_3090: 6.6
+    target: {metric: MAE, mean: 0.2421, std: 0.0016}          # Table 3
+    target_no_pe: {metric: MAE, mean: 0.2447, std: 0.0015}    # Table 6
+  ogbg-molhiv:            # Table 9
+    layers: 4
+    edge_feature_module: true
+    norm: batchnorm
+    dropout: 0.1
+    residual: false
+    ffn: true                    # Eq. 10 FFN carries its own skip + BN
+    pe: rwse-20
+    hidden_dim: 256
+    pooling: mean
+    batch_size: 32
+    lr: 0.0001
+    epochs: 100
+    warmup_epochs: 5
+    weight_decay: 1.0e-5
+    params_reported: 1407641
+    sec_per_epoch_3090: 16.3
+    target: {metric: AUROC, mean: 0.8012, std: 0.0124}        # Table 4
+    target_no_pe: {metric: AUROC, mean: 0.7593, std: 0.0051}  # Table 6
+
+gatedgcn_plus:
+  peptides-func:          # Table 13
+    layers: 5
+    edge_feature_module: true
+    norm: batchnorm
+    dropout: 0.05
+    residual: false
+    ffn: false
+    pe: rwse-32
+    hidden_dim: 135
+    pooling: mean
+    batch_size: 16
+    lr: 0.0005
+    epochs: 300
+    warmup_epochs: 5
+    weight_decay: 0.0
+    params_reported: 521141
+    sec_per_epoch_3090: 17.3
+    target: {metric: AP, mean: 0.7006, std: 0.0033}
+  peptides-struct:        # Table 13
+    layers: 4
+    edge_feature_module: true
+    norm: batchnorm
+    dropout: 0.2
+    residual: true
+    ffn: false
+    pe: rwse-32
+    hidden_dim: 145
+    pooling: mean
+    batch_size: 32
+    lr: 0.001
+    epochs: 300
+    warmup_epochs: 5
+    weight_decay: 0.0
+    params_reported: 492897
+    sec_per_epoch_3090: 8.0
+    target: {metric: MAE, mean: 0.2431, std: 0.0020}
+  ogbg-molhiv:            # Table 13
+    layers: 3
+    edge_feature_module: true
+    norm: batchnorm
+    dropout: 0.0
+    residual: true
+    ffn: false
+    pe: rwse-20
+    hidden_dim: 256
+    pooling: mean
+    batch_size: 32
+    lr: 0.0001
+    epochs: 100
+    warmup_epochs: 5
+    weight_decay: 1.0e-5
+    params_reported: 1076633
+    sec_per_epoch_3090: 15.1
+    target: {metric: AUROC, mean: 0.8040, std: 0.0164}
+
+baselines:
+  gcn_peptides-func:      # Tönshoff et al. 2023, Table 2; cited as "GCN" in GNN+ Table 3
+    layers: 6
+    hidden_dim: 235
+    head_depth: 3
+    dropout: 0.1
+    pe: rwse              # walk length unstated in the table
+    batch_size: 200
+    lr: 0.001
+    epochs: 250
+    params_reported: "486k"
+    residual: unstated
+    norm: unstated
+    target: {metric: AP, mean: 0.6860, std: 0.0050}
+  gcn_ogbg-molhiv:        # Hu et al. 2020 (OGB); cited as "GCN" in GNN+ Table 4
+    config: "OGB reference GCN; read from the OGB paper/example code"
+    target: {metric: AUROC, mean: 0.7606, std: 0.0097}

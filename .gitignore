@@ -1,0 +1,17 @@
+# Data and artifacts
+data/
+datasets/
+*.pt
+*.pth
+*.ckpt
+*.npz
+runs/
+wandb/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
