@@ -1,12 +1,12 @@
 # Data and artifacts
-data/
-datasets/
+/data/
+/datasets/
 *.pt
 *.pth
 *.ckpt
 *.npz
-runs/
-wandb/
+/runs/
+/wandb/
 
 # Python
 __pycache__/
@@ -15,3 +15,5 @@ __pycache__/
 venv/
 .ipynb_checkpoints/
 .DS_Store
+results/smoke/
+logs/

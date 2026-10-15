@@ -1,0 +1,1 @@
+run,config,dataset,arch,seed,params,epochs_run,best_epoch,best_val,test_at_best_val,test_at_last_epoch,mean_seconds_per_epoch,device,torch

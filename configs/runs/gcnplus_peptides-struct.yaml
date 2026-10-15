@@ -1,0 +1,27 @@
+# gcnplus_peptides-struct: paper settings from Table 9 (arXiv 2502.09263v3); readings from
+# results/param_count_matching.md (all six reported counts matched, repo unopened).
+dataset: peptides-struct
+arch: gnnplus
+expected_params: 506127
+model:
+  conv: gcn
+  layers: 5
+  hidden: 255
+  edge: false
+  dropout: 0.2
+  residual: false
+  ffn: false
+  pe_steps: 32
+  pooling: mean
+  pe_dim: 28
+  head: mlp
+  head_layers: 3
+train:
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 300
+  warmup_epochs: 5
+  scheduler: cosine_with_warmup   # A3 blind default
+  clip_grad_norm: 0.0              # A14 blind default: off
+  seed: 0

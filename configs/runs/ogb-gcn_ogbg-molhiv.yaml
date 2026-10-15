@@ -1,0 +1,16 @@
+# Baseline C0b: OGB reference GCN (examples/graphproppred/mol, --gnn gcn).
+dataset: ogbg-molhiv
+arch: ogb_gcn
+model:
+  hidden: 300
+  layers: 5
+  dropout: 0.5
+train:
+  optimizer: adam
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 100
+  scheduler: none
+  clip_grad_norm: 0.0
+  seed: 0

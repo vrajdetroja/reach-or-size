@@ -1,0 +1,20 @@
+# Claim C0: Tönshoff et al. 2023 tuned GCN (configs/LRGB-tuned/peptides-func-GCN.yaml in their repo).
+dataset: peptides-func
+arch: tonshoff_gcn
+expected_params: 485741
+model:
+  hidden: 235
+  layers: 6
+  dropout: 0.1
+  pe_steps: 20
+  pe_dim: 28
+  head_layers: 3
+train:
+  batch_size: 200
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 250
+  warmup_epochs: 5
+  scheduler: cosine_with_warmup
+  clip_grad_norm: 1.0   # their config sets clip_grad_norm: True; GraphGPS clips at 1.0
+  seed: 0

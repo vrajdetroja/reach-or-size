@@ -8,7 +8,34 @@ Details the paper (arXiv 2502.09263v3) leaves open, or states in a way that admi
 
 Tables 9 and 13 give an exact parameter count for every tuned config (for example 507,351 for GCN+ on Peptides-func). Each combination of readings for A1, A2, A7, A8, A10, A11 and A12 predicts an exact count. Before opening the GNNPlus repository, we will instantiate our implementation under each combination and record which ones match all six in-scope counts. A reading that matches all six is strong evidence; a reading that matches none is ruled out. We commit the result of this step before the code diff, so the diff also tests how well the method worked.
 
-## Table
+## Result of parameter-count matching (2026-10-15, GNNPlus repository still unopened)
+
+Script: `python -m src.param_count`. Output: `results/param_count_matching.md`. Analytic counts are checked against instantiated models, and `tests/test_models.py` checks every run config against its reported count.
+
+We searched 768 architecture readings for GCN+ and 48 for GatedGCN+. Each reading was combined with 7 head shapes and 7 RWSE widths per dataset, and had to hit all three in-scope counts for its model exactly.
+- **GCN+:** exactly one reading matches all three. A wider generic search found the same single solution. It allowed any per-layer cost of the form a·d² + b·d, an edge part of up to d² + 19d, FFN widths 1/2/4 with or without BatchNorm, and RWSE widths 4–64.
+- **GatedGCN+:** two readings match, and they differ only in FFN width. No in-scope GatedGCN+ config uses the FFN, and GCN+ molhiv fixes the width at 2d.
+- **Tönshoff's GCN:** our rebuild has 485,741 parameters, matching the "486k" in their paper. This is a check that the method works.
+
+This is evidence, not proof. A reading outside the enumerated space could also match.
+
+| # | Reading the counts select | Blind default before matching | Paper text it conflicts with |
+| --- | --- | --- | --- |
+| A1 | **The GCN+ edge term has no per-layer parameters.** Edges enter through one bond embedding shared by all layers. A learned self-loop edge embedding is ruled out. | Per-layer W_e (d² + d per layer) | **Eq. 6 names W_e^l, "the trainable weight matrix in layer l".** First candidate for `DISCREPANCIES.md`. |
+| A7 | GraphGPS-style RWSE encoder: BatchNorm on the K raw return probabilities, Linear(K → p) with **p = 28 on Peptides and 16 on molhiv**, concatenated to an atom embedding of width d − p | One W_PE on [atom embedding ‖ RWSE] | Eq. 12 is consistent only if W_PE is block-diagonal |
+| A8 | GatedGCN+ = Dwivedi-style layer: five biased linear maps, edge into the gate, gates normalized over neighbors, edge states updated with their own BatchNorm. Eq. 4 readings without edge updates are ruled out. | Same | Eq. 4 shows no edge term and no gate normalization |
+| A10 | **Prediction heads are deep.** GCN+: 4-layer MLP (Peptides-func), 3-layer MLP (Peptides-struct), 4 linear layers halving 256 → 128 → 64 → 32 → 1 (molhiv). GatedGCN+: 3-layer MLP on both Peptides datasets, 3 halving layers on molhiv. | Not chosen | The paper does not mention head depth. Tönshoff et al. found it is the largest single factor on Peptides-struct, so it likely carries part of the GNN+ gain. |
+| A11 | OGB encoders with the current atom vocabulary (174). The bond encoder is built **even when the edge module is off** (GCN+ Peptides-struct), as in Tönshoff's GCN. | OGB encoders | None; harmless dead parameters |
+| A12 | FFN width 2d, with BatchNorm, exactly as Eq. 10 is written | 2d | None |
+| — | GCN has a bias after aggregation | — | Eq. 2 shows no bias |
+
+**Still open after matching (equal parameter counts):**
+- A1 sub-readings: edge embedding added after W, which is what we run, vs. (h_u + e_uv)W, implemented as `shared_pre_linear`; self-loop edge term zero vs. absent.
+- A2, A3, A4, A13–A17, and the head's activation and dropout.
+
+These go to the code diff.
+
+## Table (pre-matching record)
 
 | # | Detail | Candidate readings | Blind default | Resolve by |
 | --- | --- | --- | --- | --- |
