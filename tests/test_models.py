@@ -12,7 +12,7 @@ from src.gnnplus.model import GNNPlus, count_parameters
 from src.param_count import analytic_count
 from src.train import build_model, rwse_steps
 
-CONFIGS = sorted(glob.glob('configs/runs/*.yaml') + glob.glob('configs/extension/*.yaml'))
+CONFIGS = sorted(glob.glob('configs/runs/*.yaml') + glob.glob('configs/extension/*.yaml') + glob.glob('configs/code/*.yaml'))
 
 
 def _random_batch(num_graphs, pe_steps, num_tasks, seed=0):
@@ -70,3 +70,30 @@ def test_gcn_layer_matches_dense_formula_without_edges():
     x = torch.randn(n, 8)
     expected = (d[:, None] * a * d[None, :]) @ conv.lin(x) + conv.bias
     assert torch.allclose(conv(x, edge_index, None, None), expected, atol=1e-5)
+
+
+def test_code_aligned_configs_keep_reported_counts():
+    # The released code's choices are parameter-free except the molhiv FFN (one extra BatchNorm per
+    # layer) and head (3 halving layers, not 4); together they must reproduce the same counts.
+    for path in sorted(glob.glob('configs/code/*.yaml')):
+        cfg = yaml.safe_load(open(path))
+        if 'expected_params' in cfg:
+            assert count_parameters(build_model(cfg, TASKS[cfg['dataset']]['num_tasks'])) == cfg['expected_params'], path
+
+
+def test_code_style_gcn_message():
+    # gcne: h_v = sum over in-neighbours of ReLU(h_u W + e_uv) + b; no self-loop, no normalization.
+    from src.gnnplus.layers import GCNPlusConv
+    cfg = ModelConfig(hidden=4, edge=True, edge_encoder='shared', gcn_message='code')
+    conv = GCNPlusConv(cfg)
+    x = torch.randn(3, 4)
+    edge_index = torch.tensor([[0, 1, 1, 2], [1, 0, 2, 1]])
+    e = torch.randn(4, 4)
+    out = conv(x, edge_index, None, e)
+    xw = conv.lin(x)
+    expected = torch.stack([
+        torch.relu(xw[1] + e[1]),
+        torch.relu(xw[0] + e[0]) + torch.relu(xw[2] + e[3]),
+        torch.relu(xw[1] + e[2]),
+    ]) + conv.bias
+    assert torch.allclose(out, expected, atol=1e-6)

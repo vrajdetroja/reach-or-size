@@ -46,6 +46,10 @@ class ModelConfig:
     gate_norm: bool = True         # A8: normalize gates over neighbors
     edge_residual: str = 'follow'  # A8: 'follow' the node residual flag | 'always'
     ffn_ratio: int = 2             # A12
+    # Code-aligned variants (DISCREPANCIES.md); defaults are the paper's readings.
+    gcn_message: str = 'paper'     # row 1: 'paper' (Eq. 6) | 'code' (gcne: sum of ReLU(h_u W + e_uv), no self-loops/norm)
+    layer_act: str = ''            # row 2: activation inside the GNN layers if it differs from `act` ('' = same)
+    ffn_style: str = 'paper'       # row 5: 'paper' (Eq. 10) | 'code' (BN before the FFN, dropout inside it)
 
 
 class GCNPlusConv(nn.Module):
@@ -86,9 +90,16 @@ class GCNPlusConv(nn.Module):
             loop = self.edge_lin.bias  # W_e applied to a zero edge feature
         else:
             loop = torch.zeros(d, device=device)
-        return torch.cat([real, loop.expand(n, d)])
+        return torch.cat([real, loop.expand(n, d)]) if n else real
 
     def forward(self, x, edge_index, edge_attr, edge_emb):
+        if self.cfg.edge and self.cfg.gcn_message == 'code':
+            # Released code (gcn_conv_layer_e.py): no self-loops, no degree normalization,
+            # h_v <- sum_{u in N(v)} ReLU(h_u W + e_uv) + b.
+            src, dst = edge_index
+            msg = F.relu(self.lin(x)[src] + self._edge_terms(edge_attr, edge_emb, 0, x.device))
+            out = torch.zeros_like(x).index_add_(0, dst, msg)
+            return out + self.bias if self.bias is not None else out
         n = x.size(0)
         loops = torch.arange(n, device=x.device)
         src = torch.cat([edge_index[0], loops])
@@ -152,17 +163,26 @@ class GatedGCNConv(nn.Module):
 
 
 class FFN(nn.Module):
-    """Eq. 10: FFN(h) = BN(act(h W1) W2 + h). Note the skip connection inside."""
+    """Eq. 10: FFN(h) = BN(act(h W1) W2 + h). Note the skip connection inside.
 
-    def __init__(self, d, ratio, act):
+    style='code' follows the released code: h <- BN2(BN1(h) + Drop(W2 Drop(act(W1 BN1(h))))).
+    """
+
+    def __init__(self, d, ratio, act, style='paper', dropout=0.0):
         super().__init__()
+        self.style, self.dropout = style, dropout
+        self.pre_bn = nn.BatchNorm1d(d) if style == 'code' else None
         self.lin1 = nn.Linear(d, ratio * d)
         self.lin2 = nn.Linear(ratio * d, d)
         self.act = act()
         self.bn = nn.BatchNorm1d(d)
 
     def forward(self, h):
-        return self.bn(self.lin2(self.act(self.lin1(h))) + h)
+        if self.pre_bn is None:
+            return self.bn(self.lin2(self.act(self.lin1(h))) + h)
+        h = self.pre_bn(h)
+        inner = F.dropout(self.act(self.lin1(h)), self.dropout, self.training)
+        return self.bn(h + F.dropout(self.lin2(inner), self.dropout, self.training))
 
 
 class GNNPlusLayer(nn.Module):
@@ -173,13 +193,14 @@ class GNNPlusLayer(nn.Module):
         self.cfg = cfg
         d = cfg.hidden
         act = ACTIVATIONS[cfg.act]
+        layer_act = ACTIVATIONS[cfg.layer_act or cfg.act]
         self.conv = GCNPlusConv(cfg) if cfg.conv == 'gcn' else GatedGCNConv(cfg)
         self.bn = nn.BatchNorm1d(d) if cfg.bn else None
-        self.act = act()
-        self.ffn = FFN(d, cfg.ffn_ratio, act) if cfg.ffn else None
+        self.act = layer_act()
+        self.ffn = FFN(d, cfg.ffn_ratio, act, cfg.ffn_style, cfg.dropout) if cfg.ffn else None
         updates_edges = cfg.conv == 'gatedgcn' and cfg.edge and cfg.gated_variant == 'dwivedi'
         self.edge_bn = nn.BatchNorm1d(d) if updates_edges and cfg.bn else None
-        self.edge_act = act() if updates_edges else None
+        self.edge_act = layer_act() if updates_edges else None
 
     def forward(self, x, edge_index, edge_attr, edge_emb):
         cfg = self.cfg

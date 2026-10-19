@@ -19,6 +19,10 @@ We searched 768 architecture readings for GCN+ and 48 for GatedGCN+. Each readin
 
 This is evidence, not proof. A reading outside the enumerated space could also match.
 
+**Checked against the released code (2026-10-19, `DISCREPANCIES.md`):** every selected reading held except one.
+- **The exception:** GCN+ molhiv has a 3-layer halving head and **two** FFN BatchNorms, not a 4-layer head and one. Both cost exactly 1,407,641 parameters, and the second BatchNorm was outside the search space.
+- **What counts cannot show:** the material differences are all parameter-free: the edge-message form, the activation, head dropout and gradient clipping.
+
 | # | Reading the counts select | Blind default before matching | Paper text it conflicts with |
 | --- | --- | --- | --- |
 | A1 | **The GCN+ edge term has no per-layer parameters.** Edges enter through one bond embedding shared by all layers. A learned self-loop edge embedding is ruled out. | Per-layer W_e (d² + d per layer) | **Eq. 6 names W_e^l, "the trainable weight matrix in layer l".** First candidate for `DISCREPANCIES.md`. |
@@ -26,7 +30,7 @@ This is evidence, not proof. A reading outside the enumerated space could also m
 | A8 | GatedGCN+ = Dwivedi-style layer: five biased linear maps, edge into the gate, gates normalized over neighbors, edge states updated with their own BatchNorm. Eq. 4 readings without edge updates are ruled out. | Same | Eq. 4 shows no edge term and no gate normalization |
 | A10 | **Prediction heads are deep.** GCN+: 4-layer MLP (Peptides-func), 3-layer MLP (Peptides-struct), 4 linear layers halving 256 → 128 → 64 → 32 → 1 (molhiv). GatedGCN+: 3-layer MLP on both Peptides datasets, 3 halving layers on molhiv. | Not chosen | The paper does not mention head depth. Tönshoff et al. found it is the largest single factor on Peptides-struct, so it likely carries part of the GNN+ gain. |
 | A11 | OGB encoders with the current atom vocabulary (174). The bond encoder is built **even when the edge module is off** (GCN+ Peptides-struct), as in Tönshoff's GCN. | OGB encoders | None; harmless dead parameters |
-| A12 | FFN width 2d, with BatchNorm, exactly as Eq. 10 is written | 2d | None |
+| A12 | FFN width 2d, with BatchNorm as in Eq. 10. *Code check:* the code adds a second BatchNorm before the FFN and dropout inside it. | 2d | Eq. 10 has one BatchNorm |
 | — | GCN has a bias after aggregation | — | Eq. 2 shows no bias |
 
 **Still open after matching (equal parameter counts):**

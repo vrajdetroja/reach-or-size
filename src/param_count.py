@@ -100,7 +100,7 @@ def analytic_count(cfg: ModelConfig, atom_vocab=ATOM_VOCAB):
             per_layer += 2 * d
     if cfg.ffn:
         r = cfg.ffn_ratio * d
-        per_layer += d * r + r + r * d + d + 2 * d
+        per_layer += d * r + r + r * d + d + 2 * d + (2 * d if cfg.ffn_style == 'code' else 0)
     n += cfg.layers * per_layer
     # Head
     width = d

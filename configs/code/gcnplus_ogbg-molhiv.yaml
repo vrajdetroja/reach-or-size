@@ -1,0 +1,30 @@
+# Code-aligned version of configs/runs/gcnplus_ogbg-molhiv.yaml: follows the released GNNPlus code (commit 0e02ad9)
+# wherever it is explicit. Changes: model {'gcn_message': 'code', 'act': 'relu', 'ffn_style': 'code', 'head_layers': 3}, train {'clip_grad_norm': 1.0}. See DISCREPANCIES.md rows 1-6.
+dataset: ogbg-molhiv
+arch: gnnplus
+expected_params: 1407641
+model:
+  conv: gcn
+  layers: 4
+  hidden: 256
+  edge: true
+  dropout: 0.1
+  residual: false
+  ffn: true
+  pe_steps: 20
+  pooling: mean
+  pe_dim: 16
+  head: halving
+  head_layers: 3
+  gcn_message: code
+  act: relu
+  ffn_style: code
+train:
+  batch_size: 32
+  lr: 0.0001
+  weight_decay: 1.0e-05
+  epochs: 100
+  warmup_epochs: 5
+  scheduler: cosine_with_warmup
+  clip_grad_norm: 1.0
+  seed: 0

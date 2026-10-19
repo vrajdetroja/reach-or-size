@@ -1,0 +1,29 @@
+# Code-aligned version of configs/runs/gcnplus_peptides-struct.yaml: follows the released GNNPlus code (commit 0e02ad9)
+# wherever it is explicit. Changes: model {'act': 'gelu', 'head_dropout': True}, train {'clip_grad_norm': 1.0}. See DISCREPANCIES.md rows 1-6.
+dataset: peptides-struct
+arch: gnnplus
+expected_params: 506127
+model:
+  conv: gcn
+  layers: 5
+  hidden: 255
+  edge: false
+  dropout: 0.2
+  residual: false
+  ffn: false
+  pe_steps: 32
+  pooling: mean
+  pe_dim: 28
+  head: mlp
+  head_layers: 3
+  act: gelu
+  head_dropout: true
+train:
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 300
+  warmup_epochs: 5
+  scheduler: cosine_with_warmup
+  clip_grad_norm: 1.0
+  seed: 0
