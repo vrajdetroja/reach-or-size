@@ -1,0 +1,38 @@
+# Reproduction runs: every headline cell, seeds 0-2, code-aligned GNN+ (PREREGISTRATION.md §7, 2026-10-19).
+# Outputs go to results/runs/ (analysis.aggregate reads them).
+# C3a
+python -m src.train configs/code/gatedgcnplus_peptides-func.yaml --seed 0
+python -m src.train configs/code/gatedgcnplus_peptides-func.yaml --seed 1
+python -m src.train configs/code/gatedgcnplus_peptides-func.yaml --seed 2
+# C3b
+python -m src.train configs/code/gatedgcnplus_peptides-struct.yaml --seed 0
+python -m src.train configs/code/gatedgcnplus_peptides-struct.yaml --seed 1
+python -m src.train configs/code/gatedgcnplus_peptides-struct.yaml --seed 2
+# C1
+python -m src.train configs/code/gcnplus_peptides-func.yaml --seed 0
+python -m src.train configs/code/gcnplus_peptides-func.yaml --seed 1
+python -m src.train configs/code/gcnplus_peptides-func.yaml --seed 2
+# C5a
+python -m src.train configs/code/gcnplus_peptides-func_nope.yaml --seed 0
+python -m src.train configs/code/gcnplus_peptides-func_nope.yaml --seed 1
+python -m src.train configs/code/gcnplus_peptides-func_nope.yaml --seed 2
+# C4b
+python -m src.train configs/code/gatedgcnplus_ogbg-molhiv.yaml --seed 0
+python -m src.train configs/code/gatedgcnplus_ogbg-molhiv.yaml --seed 1
+python -m src.train configs/code/gatedgcnplus_ogbg-molhiv.yaml --seed 2
+# C2
+python -m src.train configs/code/gcnplus_peptides-struct.yaml --seed 0
+python -m src.train configs/code/gcnplus_peptides-struct.yaml --seed 1
+python -m src.train configs/code/gcnplus_peptides-struct.yaml --seed 2
+# C5b
+python -m src.train configs/code/gcnplus_ogbg-molhiv_nope.yaml --seed 0
+python -m src.train configs/code/gcnplus_ogbg-molhiv_nope.yaml --seed 1
+python -m src.train configs/code/gcnplus_ogbg-molhiv_nope.yaml --seed 2
+# C4a
+python -m src.train configs/code/gcnplus_ogbg-molhiv.yaml --seed 0
+python -m src.train configs/code/gcnplus_ogbg-molhiv.yaml --seed 1
+python -m src.train configs/code/gcnplus_ogbg-molhiv.yaml --seed 2
+# C0b: OGB GCN baseline (its own code, unchanged)
+python -m src.train configs/runs/ogb-gcn_ogbg-molhiv.yaml --seed 0
+python -m src.train configs/runs/ogb-gcn_ogbg-molhiv.yaml --seed 1
+python -m src.train configs/runs/ogb-gcn_ogbg-molhiv.yaml --seed 2

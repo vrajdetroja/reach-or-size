@@ -4,6 +4,8 @@
 
 **Single claim being tested:** with tuned edge features, BatchNorm, dropout, residuals, FFN and RWSE, classic message-passing GNNs (GCN, GatedGCN) match or beat graph transformers on graph-level tasks. We test it on 3 of the paper's 14 datasets with 2 of its 3 models, so our verdict cannot speak to the 14-dataset ranking.
 
+Our GNN+ numbers come from the code-aligned implementation (`configs/code/`). It follows the released code where the code is explicit (`PREREGISTRATION.md` §7, 2026-10-19). The paper-literal reading is measured separately (`DISCREPANCIES.md`).
+
 Target numbers are the paper's (mean ± std over 5 seeds). Tolerance is preregistered in `PREREGISTRATION.md` §3: a claim reproduces if our 3-seed mean lies within 2 × the paper's reported std of the paper's mean.
 
 ## Per-number claims

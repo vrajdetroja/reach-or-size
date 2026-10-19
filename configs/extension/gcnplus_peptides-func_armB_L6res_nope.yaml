@@ -1,6 +1,6 @@
 # Extension arm B (PREREGISTRATION.md 5.3): 6 layers, residuals on, hidden 227, no RWSE.
-# Base: configs/runs/gcnplus_peptides-func.yaml; only the fields below differ from it.
-# Changed: model {'residual': True, 'layers': 6, 'hidden': 227, 'pe_steps': 0}, train -. Reused cells: no reuse: residuals change the tuned config.
+# Base: configs/code/gcnplus_peptides-func.yaml (code-aligned; deviation logged 2026-10-19); only the fields below differ from it.
+# Changed: model {'residual': True, 'layers': 6, 'hidden': 227, 'pe_steps': 0}, train -. Reused cells: none: residuals change the tuned config.
 # expected_params is our implementation's count, not a paper number.
 dataset: peptides-func
 arch: gnnplus
@@ -18,6 +18,9 @@ model:
   pe_dim: 28
   head: mlp
   head_layers: 4
+  gcn_message: code
+  act: gelu
+  head_dropout: true
 train:
   batch_size: 16
   lr: 0.001
@@ -25,5 +28,5 @@ train:
   epochs: 300
   warmup_epochs: 5
   scheduler: cosine_with_warmup
-  clip_grad_norm: 0.0
+  clip_grad_norm: 1.0
   seed: 0

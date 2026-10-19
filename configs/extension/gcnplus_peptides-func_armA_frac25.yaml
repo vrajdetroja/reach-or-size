@@ -1,6 +1,6 @@
 # Extension arm A (PREREGISTRATION.md 5.3): 25% training subset, RWSE-32.
-# Base: configs/runs/gcnplus_peptides-func.yaml; only the fields below differ from it.
-# Changed: model -, train {'subset_file': 'configs/subsets/peptides-func_train_frac25_seed0.json', 'steps_per_epoch': 680}. Reused cells: armA 100% cells = configs/runs/gcnplus_peptides-func.yaml (C1) and _nope.yaml (C5a).
+# Base: configs/code/gcnplus_peptides-func.yaml (code-aligned; deviation logged 2026-10-19); only the fields below differ from it.
+# Changed: model -, train {'subset_file': 'configs/subsets/peptides-func_train_frac25_seed0.json', 'steps_per_epoch': 680}. Reused cells: 100% cells = configs/code/gcnplus_peptides-func.yaml (C1) and _nope.yaml (C5a).
 # expected_params is our implementation's count, not a paper number.
 dataset: peptides-func
 arch: gnnplus
@@ -18,6 +18,9 @@ model:
   pe_dim: 28
   head: mlp
   head_layers: 4
+  gcn_message: code
+  act: gelu
+  head_dropout: true
 train:
   batch_size: 16
   lr: 0.001
@@ -25,7 +28,7 @@ train:
   epochs: 300
   warmup_epochs: 5
   scheduler: cosine_with_warmup
-  clip_grad_norm: 0.0
+  clip_grad_norm: 1.0
   seed: 0
   subset_file: configs/subsets/peptides-func_train_frac25_seed0.json
   steps_per_epoch: 680

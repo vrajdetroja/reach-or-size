@@ -1,1 +1,4 @@
 run,config,dataset,arch,seed,params,epochs_run,best_epoch,best_val,test_at_best_val,test_at_last_epoch,mean_seconds_per_epoch,device,torch
+tonshoff-gcn_peptides-func_s0,tonshoff-gcn_peptides-func,peptides-func,tonshoff_gcn,0,485741,250,220,0.7014029567121153,0.6913762559463494,0.6903322069040667,111.30958228778839,cpu,2.14.1
+tonshoff-gcn_peptides-func_s1,tonshoff-gcn_peptides-func,peptides-func,tonshoff_gcn,1,485741,250,189,0.6982317131029162,0.6966047421977467,0.6970578360626551,111.40877273845673,cpu,2.14.1
+tonshoff-gcn_peptides-func_s2,tonshoff-gcn_peptides-func,peptides-func,tonshoff_gcn,2,485741,250,159,0.7039191567852946,0.6894891095954059,0.6959378558489843,111.36203592967988,cpu,2.14.1

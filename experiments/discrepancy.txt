@@ -1,0 +1,15 @@
+# Discrepancy measurements (DISCREPANCIES.md), GCN+ Peptides-func, seeds 0-2.
+# Baseline for every row: the code-aligned C1 runs in results/runs/. Outputs: results/discrepancy/.
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d1_edge_message_paper.yaml --seed 0 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d1_edge_message_paper.yaml --seed 1 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d1_edge_message_paper.yaml --seed 2 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d2_activation_relu.yaml --seed 0 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d2_activation_relu.yaml --seed 1 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d2_activation_relu.yaml --seed 2 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d3_no_headdrop_noclip.yaml --seed 0 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d3_no_headdrop_noclip.yaml --seed 1 --out results/discrepancy
+python -m src.train configs/discrepancy/gcnplus_peptides-func_d3_no_headdrop_noclip.yaml --seed 2 --out results/discrepancy
+# All three at once: Eq. 6 + ReLU + no head dropout + no clipping = the paper-literal implementation
+python -m src.train configs/runs/gcnplus_peptides-func.yaml --seed 0 --out results/discrepancy
+python -m src.train configs/runs/gcnplus_peptides-func.yaml --seed 1 --out results/discrepancy
+python -m src.train configs/runs/gcnplus_peptides-func.yaml --seed 2 --out results/discrepancy

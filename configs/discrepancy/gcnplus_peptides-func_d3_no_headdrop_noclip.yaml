@@ -1,0 +1,30 @@
+# Discrepancy measurement, DISCREPANCIES.md rows 3+4: no head dropout, no gradient clipping.
+# One factor changed from configs/code/gcnplus_peptides-func.yaml: model {'head_dropout': False}, train {'clip_grad_norm': 0.0}.
+dataset: peptides-func
+arch: gnnplus
+expected_params: 507351
+model:
+  conv: gcn
+  layers: 3
+  hidden: 275
+  edge: true
+  dropout: 0.2
+  residual: false
+  ffn: false
+  pe_steps: 32
+  pooling: mean
+  pe_dim: 28
+  head: mlp
+  head_layers: 4
+  gcn_message: code
+  act: gelu
+  head_dropout: false
+train:
+  batch_size: 16
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 300
+  warmup_epochs: 5
+  scheduler: cosine_with_warmup
+  clip_grad_norm: 0.0
+  seed: 0

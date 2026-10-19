@@ -59,8 +59,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--runs', default='results/runs')
     parser.add_argument('--csv', default='results/all_runs.csv')
+    parser.add_argument('--c0-runs', default='results/env_checks/runs',
+                        help='C0 (Tönshoff GCN) ran with the CPU environment checks; only its runs are read from here')
     args = parser.parse_args()
     rows = load_runs(args.runs)
+    if os.path.isdir(args.c0_runs):
+        rows += [r for r in load_runs(args.c0_runs) if r['config'].startswith('tonshoff-gcn')]
     fields = ['run', 'config', 'dataset', 'arch', 'seed', 'params', 'epochs_run', 'best_epoch', 'best_val',
               'test_at_best_val', 'test_at_last_epoch', 'mean_seconds_per_epoch', 'device', 'torch']
     with open(args.csv, 'w') as f:
