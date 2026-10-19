@@ -12,7 +12,7 @@ from src.gnnplus.model import GNNPlus, count_parameters
 from src.param_count import analytic_count
 from src.train import build_model, rwse_steps
 
-CONFIGS = sorted(glob.glob('configs/runs/*.yaml'))
+CONFIGS = sorted(glob.glob('configs/runs/*.yaml') + glob.glob('configs/extension/*.yaml'))
 
 
 def _random_batch(num_graphs, pe_steps, num_tasks, seed=0):

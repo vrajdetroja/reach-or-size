@@ -1,0 +1,44 @@
+{
+  "peptides-func": {
+    "train": {
+      "graphs": 10873,
+      "sha256": "e11548a74140e8596c0eed5803378f8983de26719b33321c904e6c8b788a9150"
+    },
+    "val": {
+      "graphs": 2331,
+      "sha256": "41016f028b46deea073942becee5e6bf0cdf7f9989531ae2202504782ad10001"
+    },
+    "test": {
+      "graphs": 2331,
+      "sha256": "c3d44b67155b71041e00758bf281f8f3ef2a84425ee38ade5cf2802a2502dd39"
+    }
+  },
+  "peptides-struct": {
+    "train": {
+      "graphs": 10873,
+      "sha256": "8463729ce0ab21e0c6bbf11d7120b6df8fea7d6d8b7caabfa3faff798a91ded6"
+    },
+    "val": {
+      "graphs": 2331,
+      "sha256": "e1082a640c55c12287c7aa21f0abc8b63410112dbeeadded9973debdb564aba7"
+    },
+    "test": {
+      "graphs": 2331,
+      "sha256": "f7a48e6ee7b2914fb2a35cd692e05b011acd7bacdb4373495bcbfb2e8ee225ac"
+    }
+  },
+  "ogbg-molhiv": {
+    "train": {
+      "graphs": 32901,
+      "sha256": "36aa401fb6cbc0855778747c83f59f49a565a235fefdd6e71b218a2d33b7d3a3"
+    },
+    "val": {
+      "graphs": 4113,
+      "sha256": "40e29b74b7f2e35eabd5f914d8002e52c88b592427c0b730b354ef59d28f448b"
+    },
+    "test": {
+      "graphs": 4113,
+      "sha256": "ec87f777ac1d3d85ecaa1f5f870f89e9e0f990b09ee9028fa9f317519fb57642"
+    }
+  }
+}

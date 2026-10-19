@@ -1,0 +1,29 @@
+# Extension arm C (PREREGISTRATION.md 5.3): RWSE-16 (walks reach 8 hops).
+# Base: configs/runs/gcnplus_peptides-func.yaml; only the fields below differ from it.
+# Changed: model {'pe_steps': 16}, train -. Reused cells: K = 32 and no RWSE = configs/runs/gcnplus_peptides-func.yaml (C1) and _nope.yaml (C5a).
+# expected_params is our implementation's count, not a paper number.
+dataset: peptides-func
+arch: gnnplus
+expected_params: 506871
+model:
+  conv: gcn
+  layers: 3
+  hidden: 275
+  edge: true
+  dropout: 0.2
+  residual: false
+  ffn: false
+  pe_steps: 16
+  pooling: mean
+  pe_dim: 28
+  head: mlp
+  head_layers: 4
+train:
+  batch_size: 16
+  lr: 0.001
+  weight_decay: 0.0
+  epochs: 300
+  warmup_epochs: 5
+  scheduler: cosine_with_warmup
+  clip_grad_norm: 0.0
+  seed: 0

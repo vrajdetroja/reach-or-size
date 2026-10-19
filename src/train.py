@@ -11,6 +11,7 @@ Outputs: <out>/<run>/epochs.csv and <out>/<run>/summary.json.
 """
 import argparse
 import csv
+import hashlib
 import json
 import math
 import os
@@ -49,6 +50,17 @@ def build_model(cfg, num_tasks):
 
 def rwse_steps(cfg):
     return int(cfg.get('model', {}).get('pe_steps', 0)) if cfg['arch'] != 'ogb_gcn' else 0
+
+
+def load_subset(path, num_graphs):
+    """Read a committed training-subset index file and check it against its stored hash."""
+    with open(path) as f:
+        spec = json.load(f)
+    idx = spec['indices']
+    digest = hashlib.sha256(','.join(map(str, idx)).encode()).hexdigest()
+    if digest != spec['sha256'] or spec['num_train_graphs'] != num_graphs:
+        raise ValueError(f'subset file {path} does not match this training split')
+    return idx
 
 
 def loss_fn(kind, pred, y):
@@ -106,6 +118,7 @@ def endless(loader):
 
 
 def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root='data', device=None):
+    run_start = time.time()
     task = task_info(cfg['dataset'])
     tr = dict(cfg['train'])
     for key in ('lr', 'weight_decay', 'clip_grad_norm'):  # YAML reads '1e-05' as a string
@@ -116,9 +129,11 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
 
     splits = load_splits(cfg['dataset'], data_root, rwse_steps=rwse_steps(cfg))
     train_graphs = splits['train']
-    fraction = tr.get('train_fraction', 1.0)
-    if fraction < 1.0:
-        idx = nested_subset(len(train_graphs), fraction, tr.get('subset_seed', 0))
+    if tr.get('subset_file'):  # arm A: committed index file, checked by hash
+        idx = load_subset(tr['subset_file'], len(train_graphs))
+        train_graphs = [train_graphs[i] for i in idx]
+    elif tr.get('train_fraction', 1.0) < 1.0:
+        idx = nested_subset(len(train_graphs), tr['train_fraction'], tr.get('subset_seed', 0))
         train_graphs = [train_graphs[i] for i in idx.tolist()]
 
     set_seed(seed)
@@ -129,10 +144,12 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
         raise ValueError(f'{n_params} parameters, config expects {expected}')
 
     loader_gen = torch.Generator().manual_seed(seed)
-    train_loader = DataLoader(train_graphs, batch_size=tr['batch_size'], shuffle=True, generator=loader_gen)
+    workers = int(tr.get('num_workers', 0))
+    extra = dict(num_workers=workers, persistent_workers=True) if workers else {}
+    train_loader = DataLoader(train_graphs, batch_size=tr['batch_size'], shuffle=True, generator=loader_gen, **extra)
     eval_bs = max(tr['batch_size'], 128)
-    val_loader = DataLoader(splits['val'], batch_size=eval_bs)
-    test_loader = DataLoader(splits['test'], batch_size=eval_bs)
+    val_loader = DataLoader(splits['val'], batch_size=eval_bs, **extra)
+    test_loader = DataLoader(splits['test'], batch_size=eval_bs, **extra)
 
     if tr.get('optimizer', 'adamw') == 'adam':
         optimizer = torch.optim.Adam(model.parameters(), lr=tr['lr'], weight_decay=tr.get('weight_decay', 0.0))
@@ -151,11 +168,12 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
     os.makedirs(os.path.join(out_dir, run_name), exist_ok=True)
     csv_path = os.path.join(out_dir, run_name, 'epochs.csv')
     fields = ['epoch', 'lr', 'train_loss', 'train_metric', 'val_loss', 'val_metric', 'test_loss',
-              'test_metric', 'seconds']
+              'test_metric', 'seconds', 'end_time']
     rows = []
     with open(csv_path, 'w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()
+        setup_seconds = time.time() - run_start
         for epoch in range(epochs):
             start = time.time()
             model.train()
@@ -181,7 +199,7 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
                 scheduler.step()
             row = dict(epoch=epoch, lr=lr, train_loss=sum(losses) / len(y_train), train_metric=train_metric,
                        val_loss=val_loss, val_metric=val_metric, test_loss=test_loss, test_metric=test_metric,
-                       seconds=time.time() - start)
+                       seconds=time.time() - start, end_time=time.time())
             rows.append(row)
             writer.writerow(row)
             f.flush()
@@ -194,6 +212,7 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
                    epochs_run=len(rows), best_epoch=best['epoch'], best_val=best['val_metric'],
                    test_at_best_val=best['test_metric'], test_at_last_epoch=rows[-1]['test_metric'],
                    mean_seconds_per_epoch=float(np.mean([r['seconds'] for r in rows])),
+                   setup_seconds=setup_seconds, wall_seconds=time.time() - run_start,
                    device=str(device), torch=torch.__version__, smoke_test=bool(limit_batches))
     with open(os.path.join(out_dir, run_name, 'summary.json'), 'w') as f:
         json.dump(summary, f, indent=2)
