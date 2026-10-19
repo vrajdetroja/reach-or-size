@@ -1,0 +1,18 @@
+{
+  "run": "tonshoff-gcn_peptides-func_s2",
+  "dataset": "peptides-func",
+  "arch": "tonshoff_gcn",
+  "seed": 2,
+  "params": 485741,
+  "epochs_run": 250,
+  "best_epoch": 159,
+  "best_val": 0.7039191567852946,
+  "test_at_best_val": 0.6894891095954059,
+  "test_at_last_epoch": 0.6959378558489843,
+  "mean_seconds_per_epoch": 111.36203592967988,
+  "setup_seconds": 1.1493358612060547,
+  "wall_seconds": 27842.022376060486,
+  "device": "cpu",
+  "torch": "2.14.1",
+  "smoke_test": false
+}

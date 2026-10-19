@@ -10,7 +10,7 @@ Target numbers are the paper's (mean ± std over 5 seeds). Tolerance is preregis
 
 | # | Claim | Evidence | Type | Target | Tolerance (2σ) | Our result |
 | --- | --- | --- | --- | --- | --- | --- |
-| C0 | Tuned "vanilla" GCN on Peptides-func | Table 3, cited from Tönshoff et al. 2023 | Baseline (environment check) | AP 0.6860 ± 0.0050 | [0.6760, 0.6960] | — |
+| C0 | Tuned "vanilla" GCN on Peptides-func | Table 3, cited from Tönshoff et al. 2023 | Baseline (environment check) | AP 0.6860 ± 0.0050 | [0.6760, 0.6960] | **0.6925 ± 0.0037** (3 seeds, CPU environment check): **reproduced** |
 | C0b | Vanilla GCN on ogbg-molhiv | Table 4, cited from Hu et al. 2020 (OGB) | Baseline | AUROC 0.7606 ± 0.0097 | [0.7412, 0.7800] | — |
 | C1 | GCN+ on Peptides-func | Table 3 | Per-number | AP 0.7261 ± 0.0067 | [0.7127, 0.7395] | — |
 | C2 | GCN+ on Peptides-struct | Table 3 | Per-number | MAE 0.2421 ± 0.0016 | [0.2389, 0.2453] | — |
