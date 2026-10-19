@@ -165,3 +165,4 @@ Any change after the commit is logged here with its date, its reason and whether
 
 | Date | Section | Change | Before or after seeing results | Reason |
 | --- | --- | --- | --- | --- |
+| 2026-10-19 | §4 (one environment), §3.6 (environment checks) | **The environment checks run on CPU** (Apple M3, macOS, torch 2.14.1; the authors' code on torch 2.2.0), not on the RTX 4090. Same code, configs, seeds and data, which are byte-identical by fingerprint. Thresholds unchanged. **The CPU GCN+ seed-0 runs check the harness only and do not count toward C1**, so C1 gets seeds 0, 1 and 2 on the GPU with the other reproduction runs. Outputs go to `results/env_checks/`, apart from the headline runs. | Before (logged before any check ran) | The checks need no GPU. CPU and GPU runs are statistically equivalent draws but not bit-identical, so the report states the environment. |

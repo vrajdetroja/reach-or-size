@@ -1,0 +1,10 @@
+# Environment checks (PREREGISTRATION.md 3.6), run on CPU (deviation logged in PREREGISTRATION.md §7, 2026-10-19).
+# Outputs go to results/env_checks/, so none of them count toward the headline claims. Run single-threaded (OMP_NUM_THREADS=1).
+# Check 1: Tönshoff GCN, 3 seeds, our implementation.
+python -m src.train configs/runs/tonshoff-gcn_peptides-func.yaml --seed 0 --device cpu --out results/env_checks/runs
+python -m src.train configs/runs/tonshoff-gcn_peptides-func.yaml --seed 1 --device cpu --out results/env_checks/runs
+python -m src.train configs/runs/tonshoff-gcn_peptides-func.yaml --seed 2 --device cpu --out results/env_checks/runs
+# Check 2: GCN+ on Peptides-func, seed 0 -- authors' code, plus our paper-literal and code-aligned versions.
+cd third_party/GNNPlus && mkdir -p results && $GNNPLUS_VENV/bin/python main.py --cfg configs/gcn/peptides-func.yaml --repeat 1 seed 0 dataset.dir ../../data/gnnplus out_dir ../../results/env_checks/theirs/gcn_peptides-func_s0
+python -m src.train configs/runs/gcnplus_peptides-func.yaml --seed 0 --device cpu --out results/env_checks/runs
+python -m src.train configs/code/gcnplus_peptides-func.yaml --seed 0 --device cpu --out results/env_checks/runs_code
