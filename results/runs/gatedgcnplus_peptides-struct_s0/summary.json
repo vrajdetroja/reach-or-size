@@ -1,0 +1,18 @@
+{
+  "run": "gatedgcnplus_peptides-struct_s0",
+  "dataset": "peptides-struct",
+  "arch": "gnnplus",
+  "seed": 0,
+  "params": 492897,
+  "epochs_run": 300,
+  "best_epoch": 183,
+  "best_val": 0.24384787678718567,
+  "test_at_best_val": 0.2452019602060318,
+  "test_at_last_epoch": 0.24509792029857635,
+  "mean_seconds_per_epoch": 9.862480470339458,
+  "setup_seconds": 2.791978359222412,
+  "wall_seconds": 2961.7389063835144,
+  "device": "cuda",
+  "torch": "2.14.1+cu130",
+  "smoke_test": false
+}

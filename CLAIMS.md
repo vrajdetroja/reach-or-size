@@ -13,15 +13,15 @@ Target numbers are the paper's (mean ± std over 5 seeds). Tolerance is preregis
 | # | Claim | Evidence | Type | Target | Tolerance (2σ) | Our result |
 | --- | --- | --- | --- | --- | --- | --- |
 | C0 | Tuned "vanilla" GCN on Peptides-func | Table 3, cited from Tönshoff et al. 2023 | Baseline (environment check) | AP 0.6860 ± 0.0050 | [0.6760, 0.6960] | **0.6925 ± 0.0037** (3 seeds, CPU environment check): **reproduced** |
-| C0b | Vanilla GCN on ogbg-molhiv | Table 4, cited from Hu et al. 2020 (OGB) | Baseline | AUROC 0.7606 ± 0.0097 | [0.7412, 0.7800] | — |
-| C1 | GCN+ on Peptides-func | Table 3 | Per-number | AP 0.7261 ± 0.0067 | [0.7127, 0.7395] | — |
-| C2 | GCN+ on Peptides-struct | Table 3 | Per-number | MAE 0.2421 ± 0.0016 | [0.2389, 0.2453] | — |
-| C3a | GatedGCN+ on Peptides-func | Table 3 | Per-number | AP 0.7006 ± 0.0033 | [0.6940, 0.7072] | — |
-| C3b | GatedGCN+ on Peptides-struct | Table 3 | Per-number | MAE 0.2431 ± 0.0020 | [0.2391, 0.2471] | — |
-| C4a | GCN+ on ogbg-molhiv | Table 4 | Per-number | AUROC 0.8012 ± 0.0124 | [0.7764, 0.8260] | — |
-| C4b | GatedGCN+ on ogbg-molhiv | Table 4 | Per-number | AUROC 0.8040 ± 0.0164 | [0.7712, 0.8368] | — |
-| C5a | Removing RWSE hurts GCN+ on Peptides-func | Table 6 | Ablation | 0.7261 → 0.7069 (drop 0.0192) | Our drop > 2 × SE of our difference | — |
-| C5b | Removing RWSE hurts GCN+ on ogbg-molhiv | Table 6 | Ablation | 0.8012 → 0.7593 (drop 0.0419) | Our drop > 2 × SE of our difference | — |
+| C0b | Vanilla GCN on ogbg-molhiv | Table 4, cited from Hu et al. 2020 (OGB) | Baseline | AUROC 0.7606 ± 0.0097 | [0.7412, 0.7800] | 0.7565 ± 0.0241 (3 seeds): **reproduced** |
+| C1 | GCN+ on Peptides-func | Table 3 | Per-number | AP 0.7261 ± 0.0067 | [0.7127, 0.7395] | 0.7170 ± 0.0012: **reproduced**, at the low end (Δ −0.0091). The authors' own code gave 0.7187 on CPU. |
+| C2 | GCN+ on Peptides-struct | Table 3 | Per-number | MAE 0.2421 ± 0.0016 | [0.2389, 0.2453] | 0.2435 ± 0.0002: **reproduced** (Δ +0.0014) |
+| C3a | GatedGCN+ on Peptides-func | Table 3 | Per-number | AP 0.7006 ± 0.0033 | [0.6940, 0.7072] | 0.6990 ± 0.0090: **reproduced** (Δ −0.0016). Our seed spread is wider than the paper's. |
+| C3b | GatedGCN+ on Peptides-struct | Table 3 | Per-number | MAE 0.2431 ± 0.0020 | [0.2391, 0.2471] | 0.2444 ± 0.0008: **reproduced** (Δ +0.0013) |
+| C4a | GCN+ on ogbg-molhiv | Table 4 | Per-number | AUROC 0.8012 ± 0.0124 | [0.7764, 0.8260] | 0.7822 ± 0.0137: **reproduced** (Δ −0.0190) |
+| C4b | GatedGCN+ on ogbg-molhiv | Table 4 | Per-number | AUROC 0.8040 ± 0.0164 | [0.7712, 0.8368] | 0.7753 ± 0.0019: **reproduced, near the edge** (Δ −0.0287, tolerance 0.0328) |
+| C5a | Removing RWSE hurts GCN+ on Peptides-func | Table 6 | Ablation | 0.7261 → 0.7069 (drop 0.0192) | Our drop > 2 × SE of our difference | Drop 0.0111 (0.7170 → 0.7058 ± 0.0076), 2·SE 0.0088: **reproduced**. Smaller than the paper's drop. |
+| C5b | Removing RWSE hurts GCN+ on ogbg-molhiv | Table 6 | Ablation | 0.8012 → 0.7593 (drop 0.0419) | Our drop > 2 × SE of our difference | Drop 0.0258 (0.7822 → 0.7564 ± 0.0198), 2·SE 0.0278: **below the bar; provisional** until the §3.3 failure checks. The direction holds. |
 | C6 | RWSE matters because the dataset is small (Observation 6) | Sec. 5.2, offered without a test | Explanation, tested by the extension | — | Preregistered in `PREREGISTRATION.md` §5 | — |
 | C7 | GNN+ trains faster per epoch than GraphGPS | Tables 2–4, 8–13 | Not tested | — | — | Not tested: different hardware |
 
@@ -34,6 +34,13 @@ These are softer than the per-number claims. We can say whether our 3-seed mean 
 | R1 | GCN+ ranks first on Peptides-func | DRew 0.7150 ± 0.0044, GRED 0.7133 ± 0.0011, GSSC 0.7081 ± 0.0062 | Gap to second is 0.0111 AP, about 1.7 of the paper's own std. |
 | R2 | GCN+ ranks first on Peptides-struct | Graph ViT/MLP-Mixer 0.2449 ± 0.0016, MGT 0.2453 ± 0.0025, GPNN 0.2454 ± 0.0003 | Gap to the best non-GNN+ model is 0.0028 MAE. |
 | R3 | GatedGCN+ ranks first on ogbg-molhiv (pretrained models excluded) | Subgraphormer 0.8038 ± 0.0192, GSSC 0.8035 ± 0.0142, GCN+ 0.8012 ± 0.0124, Graph ViT/MLP-Mixer 0.7997 ± 0.0102, GECO 0.7980 ± 0.0200 | Gap to second is 0.0002 AUROC. Five non-pretrained models (three GTs, one state-space model and GCN+) sit within 0.006, plus the two pretrained ones (Graphormer 0.8051†, EGT 0.8060†). With 3 seeds this rank cannot be confirmed or refuted; the preregistered wording is "indistinguishable". |
+
+**Our verdicts** (`results/rankings.md`):
+- **R1:** first by mean (0.7170). Indistinguishable from DRew and GSSC, clearly ahead of the other 15 cited models.
+- **R2:** first by mean (0.2435). Indistinguishable from Graph ViT/MLP-Mixer, MGT, GRED and GSSC.
+- **R3:** our GatedGCN+ (0.7753) is **last by mean** among the 9 non-pretrained models cited. It is indistinguishable from 8 of them, but Graph ViT/MLP-Mixer (0.7997) is ahead by more than the rule's margin. Our better molhiv model, GCN+ at 0.7822, would also sit mid-table. Preregistered wording: indistinguishable; "first on molhiv" is not supported.
+
+The rule uses n_comp = 1 throughout, because competitors' seed counts are not transcribed. That is the conservative choice and can only make gaps look smaller.
 
 Distinguishability rule (preregistered): a gap counts as real only if |gap| > 2·√(s_ours²/3 + s_comp²/n_comp), with n_comp the seed count stated by the competitor's source paper, or n_comp = 1 when it is not stated.
 

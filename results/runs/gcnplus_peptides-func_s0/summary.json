@@ -1,0 +1,18 @@
+{
+  "run": "gcnplus_peptides-func_s0",
+  "dataset": "peptides-func",
+  "arch": "gnnplus",
+  "seed": 0,
+  "params": 507351,
+  "epochs_run": 300,
+  "best_epoch": 178,
+  "best_val": 0.7272008913084453,
+  "test_at_best_val": 0.7166570884542259,
+  "test_at_last_epoch": 0.7206371018117321,
+  "mean_seconds_per_epoch": 13.746458945274354,
+  "setup_seconds": 4.5865607261657715,
+  "wall_seconds": 4128.693736076355,
+  "device": "cuda",
+  "torch": "2.14.1+cu130",
+  "smoke_test": false
+}

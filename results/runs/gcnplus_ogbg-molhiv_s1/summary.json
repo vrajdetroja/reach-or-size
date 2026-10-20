@@ -1,0 +1,18 @@
+{
+  "run": "gcnplus_ogbg-molhiv_s1",
+  "dataset": "ogbg-molhiv",
+  "arch": "gnnplus",
+  "seed": 1,
+  "params": 1407641,
+  "epochs_run": 100,
+  "best_epoch": 14,
+  "best_val": 0.7958982461297277,
+  "test_at_best_val": 0.7664941385503775,
+  "test_at_last_epoch": 0.7705845999343365,
+  "mean_seconds_per_epoch": 23.23843056201935,
+  "setup_seconds": 5.642030477523804,
+  "wall_seconds": 2329.5518090724945,
+  "device": "cuda",
+  "torch": "2.14.1+cu130",
+  "smoke_test": false
+}
