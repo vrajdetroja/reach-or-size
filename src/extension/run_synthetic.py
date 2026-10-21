@@ -9,10 +9,10 @@ constant node features, BatchNorm running averages lag the model and eval-mode o
 one class while training accuracy is 1.0; recomputing the statistics on the training set fixes it.
 
 Usage: python -m src.extension.run_synthetic [--pairs 4-6 8-10] [--depths 1 2] [--ks 0 8] [--seeds 0]
-Results: results/synthetic/<run>/ and one row per run in results/synthetic/summary.csv.
+Results: results/synthetic/<run>/; a run whose summary.json exists is skipped, so parallel runs
+share nothing. analysis/synthetic.py collects the per-run summaries.
 """
 import argparse
-import csv
 import os
 
 from src.extension.synthetic import PAIRS
@@ -43,31 +43,15 @@ def main():
     parser.add_argument('--epochs', type=int)
     parser.add_argument('--out', default='results/synthetic')
     args = parser.parse_args()
-    os.makedirs(args.out, exist_ok=True)
-    summary_path = os.path.join(args.out, 'summary.csv')
-    done = set()
-    if os.path.exists(summary_path):
-        with open(summary_path) as f:
-            done = {r['run'] for r in csv.DictReader(f)}
-    fields = ['run', 'pair', 'depth', 'k', 'seed', 'best_epoch', 'best_val', 'test_at_best_val', 'params']
-    new_file = not os.path.exists(summary_path)
-    with open(summary_path, 'a', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
-        if new_file:
-            writer.writeheader()
-        for pair in args.pairs:
-            a, b = (int(x) for x in pair.split('-'))
-            for depth in args.depths:
-                for k in args.ks:
-                    for seed in args.seeds:
-                        name = f'ring-{a}-{b}_L{depth}_K{k}_s{seed}'
-                        if name in done:
-                            continue
-                        s = run(config((a, b), depth, k), seed, args.out, name, epochs=args.epochs, device='cpu')
-                        writer.writerow(dict(run=name, pair=pair, depth=depth, k=k, seed=seed,
-                                             best_epoch=s['best_epoch'], best_val=s['best_val'],
-                                             test_at_best_val=s['test_at_best_val'], params=s['params']))
-                        f.flush()
+    for pair in args.pairs:
+        a, b = (int(x) for x in pair.split('-'))
+        for depth in args.depths:
+            for k in args.ks:
+                for seed in args.seeds:
+                    name = f'ring-{a}-{b}_L{depth}_K{k}_s{seed}'
+                    if os.path.exists(os.path.join(args.out, name, 'summary.json')):
+                        continue
+                    run(config((a, b), depth, k), seed, args.out, name, epochs=args.epochs, device='cpu')
 
 
 if __name__ == '__main__':

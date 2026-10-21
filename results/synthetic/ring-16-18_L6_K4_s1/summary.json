@@ -1,0 +1,18 @@
+{
+  "run": "ring-16-18_L6_K4_s1",
+  "dataset": "ring-16-18",
+  "arch": "gnnplus",
+  "seed": 1,
+  "params": 38393,
+  "epochs_run": 60,
+  "best_epoch": 29,
+  "best_val": 0.52,
+  "test_at_best_val": 0.482,
+  "test_at_last_epoch": 0.486,
+  "mean_seconds_per_epoch": 2.077254664897919,
+  "setup_seconds": 0.3457658290863037,
+  "wall_seconds": 124.99079704284668,
+  "device": "cpu",
+  "torch": "2.14.1",
+  "smoke_test": false
+}
