@@ -1,0 +1,8 @@
+# C5b control (PREREGISTRATION.md 3.3): the authors' GCN+ on ogbg-molhiv with and without RWSE (their configs/gcn/hiv.yaml), 3 seeds each.
+# Runs from the GNNPlus checkout at 0e02ad9 in its own environment; GNNPLUS_VENV is an absolute path to it (REPORT.md §10).
+cd third_party/GNNPlus && mkdir -p results && $GNNPLUS_VENV/bin/python main.py --cfg configs/gcn/hiv.yaml --repeat 1 seed 0 dataset.dir ../../data/gnnplus out_dir ../../results/theirs_c5b/gcn_hiv_on_s0
+cd third_party/GNNPlus && mkdir -p results && $GNNPLUS_VENV/bin/python main.py --cfg configs/gcn/hiv.yaml --repeat 1 seed 1 dataset.dir ../../data/gnnplus out_dir ../../results/theirs_c5b/gcn_hiv_on_s1
+cd third_party/GNNPlus && mkdir -p results && $GNNPLUS_VENV/bin/python main.py --cfg configs/gcn/hiv.yaml --repeat 1 seed 2 dataset.dir ../../data/gnnplus out_dir ../../results/theirs_c5b/gcn_hiv_on_s2
+cd third_party/GNNPlus && mkdir -p results && $GNNPLUS_VENV/bin/python main.py --cfg configs/gcn/hiv.yaml --repeat 1 seed 0 dataset.dir ../../data/gnnplus out_dir ../../results/theirs_c5b/gcn_hiv_off_s0 dataset.node_encoder_name Atom posenc_RWSE.enable False
+cd third_party/GNNPlus && mkdir -p results && $GNNPLUS_VENV/bin/python main.py --cfg configs/gcn/hiv.yaml --repeat 1 seed 1 dataset.dir ../../data/gnnplus out_dir ../../results/theirs_c5b/gcn_hiv_off_s1 dataset.node_encoder_name Atom posenc_RWSE.enable False
+cd third_party/GNNPlus && mkdir -p results && $GNNPLUS_VENV/bin/python main.py --cfg configs/gcn/hiv.yaml --repeat 1 seed 2 dataset.dir ../../data/gnnplus out_dir ../../results/theirs_c5b/gcn_hiv_off_s2 dataset.node_encoder_name Atom posenc_RWSE.enable False

@@ -1,0 +1,18 @@
+{
+  "run": "gcnplus_peptides-func_d1_edge_message_paper_s0",
+  "dataset": "peptides-func",
+  "arch": "gnnplus",
+  "seed": 0,
+  "params": 507351,
+  "epochs_run": 300,
+  "best_epoch": 283,
+  "best_val": 0.7187479489193247,
+  "test_at_best_val": 0.7211429836256307,
+  "test_at_last_epoch": 0.720922953650276,
+  "mean_seconds_per_epoch": 12.935877216657003,
+  "setup_seconds": 9.392616271972656,
+  "wall_seconds": 3890.407401561737,
+  "device": "cuda",
+  "torch": "2.14.1+cu130",
+  "smoke_test": false
+}

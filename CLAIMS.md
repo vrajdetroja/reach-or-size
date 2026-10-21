@@ -21,7 +21,7 @@ Target numbers are the paper's (mean ± std over 5 seeds). Tolerance is preregis
 | C4a | GCN+ on ogbg-molhiv | Table 4 | Per-number | AUROC 0.8012 ± 0.0124 | [0.7764, 0.8260] | 0.7822 ± 0.0137: **reproduced** (Δ −0.0190) |
 | C4b | GatedGCN+ on ogbg-molhiv | Table 4 | Per-number | AUROC 0.8040 ± 0.0164 | [0.7712, 0.8368] | 0.7753 ± 0.0019: **reproduced, near the edge** (Δ −0.0287, tolerance 0.0328) |
 | C5a | Removing RWSE hurts GCN+ on Peptides-func | Table 6 | Ablation | 0.7261 → 0.7069 (drop 0.0192) | Our drop > 2 × SE of our difference | Drop 0.0111 (0.7170 → 0.7058 ± 0.0076), 2·SE 0.0088: **reproduced**. Smaller than the paper's drop. |
-| C5b | Removing RWSE hurts GCN+ on ogbg-molhiv | Table 6 | Ablation | 0.8012 → 0.7593 (drop 0.0419) | Our drop > 2 × SE of our difference | Drop 0.0258 (0.7822 → 0.7564 ± 0.0198), 2·SE 0.0278: **below the bar; provisional** until the §3.3 failure checks. The direction holds. |
+| C5b | Removing RWSE hurts GCN+ on ogbg-molhiv | Table 6 | Ablation | 0.8012 → 0.7593 (drop 0.0419) | Our drop > 2 × SE of our difference | Drop 0.0258 (0.7822 → 0.7564 ± 0.0198), 2·SE 0.0278. **Not reproduced at 3 seeds.** The §3.3 failure checks are done: the authors' code gives a drop of 0.0129 (0.7769 ± 0.0142 → 0.7640 ± 0.0070), also below its 2·SE of 0.0183. The direction holds, but the effect is smaller than reported and within 3-seed noise; about 5–6 seeds per arm would be needed. |
 | C6 | RWSE matters because the dataset is small (Observation 6) | Sec. 5.2, offered without a test | Explanation, tested by the extension | — | Preregistered in `PREREGISTRATION.md` §5 | — |
 | C7 | GNN+ trains faster per epoch than GraphGPS | Tables 2–4, 8–13 | Not tested | — | — | Not tested: different hardware |
 
