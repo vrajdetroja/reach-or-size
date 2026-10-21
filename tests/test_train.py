@@ -31,3 +31,28 @@ def test_cosine_with_warmup_shape():
         sched.step()
     assert lrs[0] == 1e-6 and math.isclose(lrs[1], 0.2) and math.isclose(lrs[5], 1.0)
     assert math.isclose(lrs[55], 0.5, abs_tol=1e-9) and lrs[105] < 1e-9
+
+
+def test_precise_bn_replaces_running_stats_with_training_set_average():
+    from src.train import recompute_bn_stats
+
+    class Batch:
+        def __init__(self, x):
+            self.x = x
+
+        def to(self, device):
+            return self
+
+    class Net(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.bn = torch.nn.BatchNorm1d(2)
+
+        def forward(self, b):
+            return self.bn(b.x)
+
+    net = Net()
+    batches = [Batch(torch.tensor([[1., 10.], [3., 10.]])), Batch(torch.tensor([[5., 20.], [7., 20.]]))]
+    recompute_bn_stats(net, batches, 'cpu')
+    assert torch.allclose(net.bn.running_mean, torch.tensor([4., 15.]))  # cumulative average of batch means
+    assert net.bn.momentum == 0.1  # restored

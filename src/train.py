@@ -97,6 +97,25 @@ def cosine_with_warmup(optimizer, warmup, total):
 
 
 @torch.no_grad()
+def recompute_bn_stats(model, loader, device):
+    """'Precise BN': replace BatchNorm running statistics with a cumulative average over one
+    no-gradient pass of the training set. Used where running averages lag a fast-changing model
+    on near-constant features (the synthetic task's constant node features); off by default."""
+    bns = [m for m in model.modules() if isinstance(m, torch.nn.modules.batchnorm._BatchNorm)]
+    if not bns:
+        return
+    momenta = [b.momentum for b in bns]
+    for b in bns:
+        b.reset_running_stats()
+        b.momentum = None
+    model.train()
+    for batch in loader:
+        model(batch.to(device))
+    for b, m in zip(bns, momenta):
+        b.momentum = m
+
+
+@torch.no_grad()
 def evaluate(model, loader, task, device, limit=None):
     model.eval()
     preds, ys, losses = [], [], []
@@ -147,6 +166,7 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
     workers = int(tr.get('num_workers', 0))
     extra = dict(num_workers=workers, persistent_workers=True) if workers else {}
     train_loader = DataLoader(train_graphs, batch_size=tr['batch_size'], shuffle=True, generator=loader_gen, **extra)
+    bn_stats_loader = DataLoader(train_graphs, batch_size=tr['batch_size']) if tr.get('precise_bn') else None
     eval_bs = max(tr['batch_size'], 128)
     val_loader = DataLoader(splits['val'], batch_size=eval_bs, **extra)
     test_loader = DataLoader(splits['test'], batch_size=eval_bs, **extra)
@@ -193,6 +213,8 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
                 ys.append(batch.y.cpu())
             y_train = torch.cat(ys)
             train_metric = metric_fn(task['metric'], torch.cat(preds), y_train)
+            if bn_stats_loader is not None:
+                recompute_bn_stats(model, bn_stats_loader, device)
             val_loss, val_metric = evaluate(model, val_loader, task, device, limit_batches)
             test_loss, test_metric = evaluate(model, test_loader, task, device, limit_batches)
             if scheduler is not None:

@@ -4,6 +4,9 @@ Grid: ring pairs x depth L in {1, 2, 3, 4, 6, 8} x RWSE-K in {none, 4, 8, 16, 32
 Settings the preregistration leaves open, fixed here before any grid run:
 hidden 64, 2-layer MLP head, RWSE width 16 (GraphGPS-style encoder), dropout 0,
 AdamW lr 1e-3, batch 32, 60 epochs with 5 warmup epochs, test at best validation.
+Added 2026-10-21 before the grid (PREREGISTRATION.md 7): precise BN before every evaluation. With
+constant node features, BatchNorm running averages lag the model and eval-mode outputs collapse to
+one class while training accuracy is 1.0; recomputing the statistics on the training set fixes it.
 
 Usage: python -m src.extension.run_synthetic [--pairs 4-6 8-10] [--depths 1 2] [--ks 0 8] [--seeds 0]
 Results: results/synthetic/<run>/ and one row per run in results/synthetic/summary.csv.
@@ -27,7 +30,7 @@ def config(pair, depth, k):
                       dropout=0.0, residual=True, ffn=False, pe_steps=k, pe_dim=16, pooling='mean',
                       head='mlp', head_layers=2),
         'train': dict(batch_size=32, lr=0.001, weight_decay=0.0, epochs=60, warmup_epochs=5,
-                      scheduler='cosine_with_warmup', clip_grad_norm=0.0),
+                      scheduler='cosine_with_warmup', clip_grad_norm=0.0, precise_bn=True),
     }
 
 
