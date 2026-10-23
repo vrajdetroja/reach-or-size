@@ -1,0 +1,20 @@
+{
+  "run": "gcnplus_peptides-func_armA_frac25_s2",
+  "dataset": "peptides-func",
+  "arch": "gnnplus",
+  "seed": 2,
+  "params": 507351,
+  "train_graphs": 2718,
+  "steps_per_epoch": 680,
+  "epochs_run": 300,
+  "best_epoch": 25,
+  "best_val": 0.6005602046907557,
+  "test_at_best_val": 0.5745547754907687,
+  "test_at_last_epoch": 0.5841262005594062,
+  "mean_seconds_per_epoch": 12.915198119481405,
+  "setup_seconds": 2.951378345489502,
+  "wall_seconds": 3877.7617859840393,
+  "device": "cuda",
+  "torch": "2.14.1+cu130",
+  "smoke_test": false
+}

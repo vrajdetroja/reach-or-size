@@ -121,6 +121,18 @@ def main():
                    f"| {a['x'] + 1.645 * a['se']:+.4f} | **{a['verdict']}** |")
     if arms['B']['m'] <= 0:
         out.append('\nArm B: ĝ(L=3) ≤ 0, so H-reach predicts no positive effect to lose; m_B is not meaningful.')
+    seeds = min(len(v) for v in cells.values())
+    open_arms = [(name, a) for name, a in arms.items() if a['verdict'] == 'inconclusive']
+    if open_arms:
+        # 5.5's "Anything else" row reports the seeds needed: seeds per cell at which the current estimate
+        # would cross each bound, if it and the per-cell stds stayed as measured (SE ~ 1/sqrt(seeds)).
+        out += ['', '## Seeds needed for the inconclusive arms', '',
+                f'Seeds per cell at which the current estimate would cross each bound, if it and the per-cell stds '
+                f'stayed as measured ({seeds} seeds now).', '', '| Arm | To call it positive | To call it absent |', '| --- | --- | --- |']
+        for name, a in open_arms:
+            pos = math.ceil(seeds * (2 * a['se'] / a['x']) ** 2) if a['x'] > 0 else 'never at this estimate'
+            ab = math.ceil(seeds * (1.645 * a['se'] / (a['m'] - a['x'])) ** 2) if a['m'] > a['x'] else 'never at this estimate'
+            out.append(f'| {name} | {pos} | {ab} |')
     out += ['', f"H-local's extra condition: ĝ(6) − 2·SE = {g6 - 2 * se_g6:+.4f} ({'met' if g6_positive else 'not met'}).", '',
             '## Joint reading (§5.5)', '']
     out += [f'- {r}' for r in joint_reading(arms['A']['verdict'], arms['B']['verdict'], arms['C']['verdict'], g6_positive)]
