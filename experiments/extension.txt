@@ -1,32 +1,32 @@
 # Extension arms A-C (PREREGISTRATION.md 5.3): every new cell, seeds 0-2.
 # Reused cells come from the reproduction runs: C1 (gcnplus_peptides-func) and C5a (_nope).
-python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse16.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse6.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25_nope.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50_nope.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res_nope.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res_nope.yaml --seed 0
-python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse16.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse6.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25_nope.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50_nope.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res_nope.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res_nope.yaml --seed 1
-python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse16.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse6.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25_nope.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50_nope.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res_nope.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res.yaml --seed 2
-python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res_nope.yaml --seed 2
+python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse16.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse6.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25_nope.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50_nope.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res_nope.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res_nope.yaml --seed 0 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse16.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse6.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25_nope.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50_nope.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res_nope.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res_nope.yaml --seed 1 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse16.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armC_rwse6.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac25_nope.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armA_frac50_nope.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L3res_nope.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res.yaml --seed 2 --out results/extension
+python -m src.train configs/extension/gcnplus_peptides-func_armB_L6res_nope.yaml --seed 2 --out results/extension

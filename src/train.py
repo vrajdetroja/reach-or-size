@@ -231,6 +231,7 @@ def run(cfg, seed, out_dir, run_name, epochs=None, limit_batches=None, data_root
     pick = max if task['higher_is_better'] else min
     best = pick(rows, key=lambda r: r['val_metric'])
     summary = dict(run=run_name, dataset=cfg['dataset'], arch=cfg['arch'], seed=seed, params=n_params,
+                   train_graphs=len(train_graphs), steps_per_epoch=steps_per_epoch,
                    epochs_run=len(rows), best_epoch=best['epoch'], best_val=best['val_metric'],
                    test_at_best_val=best['test_metric'], test_at_last_epoch=rows[-1]['test_metric'],
                    mean_seconds_per_epoch=float(np.mean([r['seconds'] for r in rows])),
