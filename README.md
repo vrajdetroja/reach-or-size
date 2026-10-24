@@ -65,3 +65,6 @@ python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
 Versions are pinned in `requirements.txt` (Python 3.12, torch 2.14.1, torch_geometric 2.8.1, ogb 1.3.6). Running the experiment lists and the authors' code is described in [REPORT.md](REPORT.md) §10.
 
+## License
+
+MIT, see [LICENSE](LICENSE). The paper's reported numbers in `configs/paper/` and `CLAIMS.md` are quoted from Luo, Shi & Wu (ICML 2025) for comparison.
