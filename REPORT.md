@@ -76,9 +76,10 @@ On Peptides-func, GCN+ is four of the six components; on Peptides-struct it is t
 The preregistration (§3.3) requires two checks before calling a claim not reproduced: measuring the material discrepancies, and running the authors' code on the same claim. Here, the authors' code on GCN+ molhiv gives 0.7769 ± 0.0142 with RWSE and 0.7640 ± 0.0070 without, a drop of 0.0129 against its own 2·SE of 0.0183 (`results/c5b_control.md`). Both implementations agree. The drop has the right sign but is smaller than reported and within 3-seed noise; a decisive test would need about 5–6 seeds per arm.
 
 **Ranking claims.** Preregistered rule, with competitor seed counts set to 1, the conservative choice (`results/rankings.md`).
-- **R1, Peptides-func:** GCN+ is first by mean among the 17 cited models. It is indistinguishable from DRew and GSSC and clearly ahead of the rest.
+Competitors are the methods the paper compares against: graph transformers, state-space models and other specialised architectures such as DRew (17 on each Peptides task, 9 non-pretrained on molhiv). The paper's own classic-GNN rows and GNN+ variants are not competitors for this claim; by mean, its GIN+ (0.2429) and GatedGCN+ (0.2431) would edge out our GCN+ (0.2435) on Peptides-struct.
+- **R1, Peptides-func:** GCN+ is first by mean among the 17 cited competitors. It is indistinguishable from DRew and GSSC and clearly ahead of the rest.
 - **R2, Peptides-struct:** GCN+ is first by mean. It is indistinguishable from Graph ViT/MLP-Mixer, MGT, GRED and GSSC.
-- **R3, molhiv:** GatedGCN+ (0.7753) is **last by mean** among the 9 non-pretrained models cited. It is indistinguishable from 8 of them; Graph ViT/MLP-Mixer (0.7997) is ahead by more than the margin. "First on molhiv" is not supported.
+- **R3, molhiv:** GatedGCN+ (0.7753) is **last by mean** among the 9 non-pretrained competitors cited. It is indistinguishable from 8 of them; Graph ViT/MLP-Mixer (0.7997) is ahead by more than the margin. "First on molhiv" is not supported.
 
 ## 5. Discrepancies: what the paper's text leaves out
 
@@ -264,7 +265,7 @@ H-local's own preregistered pattern (arm C absent, with ĝ(6) − 2·SE > 0) was
 
 ## 8. What this means for the original claim
 
-The claim holds on both Peptides datasets: GNN+ matches the paper's numbers and leads the cited models by mean, though by margins seed noise cannot separate from the nearest competitors. On molhiv the numbers are within tolerance but low, and the ranking is within noise. Separately, the paper's text is not enough to reproduce its own Peptides-func result. Reproducing it takes the released code, or a close reading of its parameter counts plus details the text never states.
+The claim holds on both Peptides datasets: GNN+ matches the paper's numbers and leads the cited competing methods by mean, though by margins seed noise cannot separate from the nearest competitors. On molhiv the numbers are within tolerance but low, and the ranking is within noise. Separately, the paper's text is not enough to reproduce its own Peptides-func result. Reproducing it takes the released code, or a close reading of its parameter counts plus details the text never states.
 
 On *why* RWSE helps, the paper's Observation 6 — that RWSE matters because the dataset is small — does not survive a direct test on Peptides-func. The gain does not grow when the training set shrinks, and it does not shrink when the model gets deeper. What is left is a small gain of about 0.011 AP, most of it present with walks of only 6 steps, which more depth does not replace. That fits a local-structure explanation, but our walk-length arm is not powered to establish it, and we do not claim it.
 

@@ -36,11 +36,11 @@ These are softer than the per-number claims. We can say whether our 3-seed mean 
 | R3 | GatedGCN+ ranks first on ogbg-molhiv (pretrained models excluded) | Subgraphormer 0.8038 ± 0.0192, GSSC 0.8035 ± 0.0142, GCN+ 0.8012 ± 0.0124, Graph ViT/MLP-Mixer 0.7997 ± 0.0102, GECO 0.7980 ± 0.0200 | Gap to second is 0.0002 AUROC. Five non-pretrained models (three GTs, one state-space model and GCN+) sit within 0.006, plus the two pretrained ones (Graphormer 0.8051†, EGT 0.8060†). With 3 seeds this rank cannot be confirmed or refuted; the preregistered wording is "indistinguishable". |
 
 **Our verdicts** (`results/rankings.md`):
-- **R1:** first by mean (0.7170). Indistinguishable from DRew and GSSC, clearly ahead of the other 15 cited models.
+- **R1:** first by mean (0.7170). Indistinguishable from DRew and GSSC, clearly ahead of the other 15 cited competitors.
 - **R2:** first by mean (0.2435). Indistinguishable from Graph ViT/MLP-Mixer, MGT, GRED and GSSC.
-- **R3:** our GatedGCN+ (0.7753) is **last by mean** among the 9 non-pretrained models cited. It is indistinguishable from 8 of them, but Graph ViT/MLP-Mixer (0.7997) is ahead by more than the rule's margin. Our better molhiv model, GCN+ at 0.7822, would also sit mid-table. Preregistered wording: indistinguishable; "first on molhiv" is not supported.
+- **R3:** our GatedGCN+ (0.7753) is **last by mean** among the 9 non-pretrained competitors cited. It is indistinguishable from 8 of them, but Graph ViT/MLP-Mixer (0.7997) is ahead by more than the rule's margin. Our better molhiv model, GCN+ at 0.7822, would also sit mid-table. Preregistered wording: indistinguishable; "first on molhiv" is not supported.
 
-The rule uses n_comp = 1 throughout, because competitors' seed counts are not transcribed. That is the conservative choice and can only make gaps look smaller.
+Competitors are the methods the paper compares against (graph transformers, state-space models and other specialised architectures such as DRew), not its own classic-GNN and GNN+ rows. The rule uses n_comp = 1 throughout, because competitors' seed counts are not transcribed. That is the conservative choice and can only make gaps look smaller.
 
 Distinguishability rule (preregistered): a gap counts as real only if |gap| > 2·√(s_ours²/3 + s_comp²/n_comp), with n_comp the seed count stated by the competitor's source paper, or n_comp = 1 when it is not stated.
 

@@ -5,7 +5,8 @@ title: "Reach or size? Reproducing GNN+ and testing why RWSE helps"
 authors:
   - family-names: Detroja
     given-names: Vraj
-date-released: "2026-10-24"
+version: 1.0.0
+date-released: "2026-11-02"
 repository-code: "https://github.com/vrajdetroja/reach-or-size"
 url: "https://github.com/vrajdetroja/reach-or-size"
 license: MIT

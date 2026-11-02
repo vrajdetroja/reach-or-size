@@ -13,7 +13,7 @@ The full write-up is [REPORT.md](REPORT.md).
 **The claim:** classic GNNs with six common additions ("GNN+") match or beat graph transformers on graph-level tasks.
 
 - **The per-number claims reproduce** on all three datasets, each within the preregistered tolerance of twice the paper's std. molhiv sits at the low end.
-- **The rankings:** first by mean on both Peptides datasets, but indistinguishable from the nearest competitors. "First on molhiv" is not supported: there, GatedGCN+ is last by mean, within noise of most models.
+- **The rankings:** against the competing methods the paper cites (not counting its own classic-GNN and GNN+ rows), GCN+ is first by mean on both Peptides datasets but indistinguishable from the nearest. "First on molhiv" is not supported: there, GatedGCN+ is last by mean among those methods, within noise of most of them.
 - **The text alone does not reproduce the result.** A model built from the paper's text scores 0.646 AP on Peptides-func, against 0.717 for one aligned with the released code. Most of the gap is head dropout and gradient clipping, which the paper never mentions.
 - **Observation 6 is not supported on Peptides-func.** Cutting the training set to 25% does not enlarge RWSE's gain; it vanishes. Going from 3 to 6 layers does not shrink it; it grows. Whether the gain needs long walks is undecided at 3 seeds.
 
@@ -27,7 +27,7 @@ The full write-up is [REPORT.md](REPORT.md).
 | C4b GatedGCN+, molhiv, AUROC | 0.8040 ± 0.0164 | 0.7753 ± 0.0019 | reproduced (near the edge) |
 | C5a RWSE drop, Peptides-func | 0.0192 | 0.0111 (2·SE 0.0088) | reproduced |
 | C5b RWSE drop, molhiv | 0.0419 | 0.0258 (2·SE 0.0278) | not reproduced at 3 seeds; the authors' code agrees |
-| R1–R3 rankings | first on all three | first by mean on Peptides, within noise; not first on molhiv | partly supported |
+| R1–R3 rankings vs. the cited competing methods | first on all three | first by mean on Peptides, within noise; not first on molhiv | partly supported |
 | C6 "RWSE matters because the data is small" | offered without a test | arm A absent, arm B absent, arm C inconclusive | not supported on Peptides-func |
 
 Both baselines also reproduce: Tönshoff GCN on Peptides-func (C0) and OGB GCN on molhiv (C0b). [CLAIMS.md](CLAIMS.md) has every row with its tolerance.
