@@ -1,5 +1,7 @@
 # Reach or size? Reproducing GNN+ and testing why RWSE helps
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23881221.svg)](https://doi.org/10.5281/zenodo.23881221)
+
 A blind reimplementation of GNN+ from [Luo, Shi & Wu, *Can Classic GNNs Be Strong Baselines for Graph-level Tasks?* (ICML 2025)](https://arxiv.org/abs/2502.09263), on 3 of the paper's 14 datasets (Peptides-func, Peptides-struct, ogbg-molhiv) with 2 of its 3 models (GCN+, GatedGCN+), 3 seeds per number.
 
 It adds one preregistered extension. The paper explains its positional-encoding result by dataset size (Observation 6). We test that against two alternatives:
@@ -74,8 +76,9 @@ If you use this reproduction, please cite it:
   author       = {Detroja, Vraj},
   title        = {Reach or size? Reproducing {GNN+} and testing why {RWSE} helps},
   year         = {2026},
-  howpublished = {\url{https://github.com/vrajdetroja/reach-or-size}},
-  note         = {GitHub repository}
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.23881221},
+  url          = {https://github.com/vrajdetroja/reach-or-size}
 }
 ```
 
@@ -92,7 +95,7 @@ and the original paper:
 }
 ```
 
-GitHub's "Cite this repository" button reads the same information from [CITATION.cff](CITATION.cff).
+The DOI above covers all versions and resolves to the latest; version 1.0.0 alone is [10.5281/zenodo.23881222](https://doi.org/10.5281/zenodo.23881222). GitHub's "Cite this repository" button reads the same information from [CITATION.cff](CITATION.cff).
 
 ## License
 
