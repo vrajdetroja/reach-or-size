@@ -65,6 +65,35 @@ python3.12 -m venv .venv && .venv/bin/pip install -r requirements.txt
 
 Versions are pinned in `requirements.txt` (Python 3.12, torch 2.14.1, torch_geometric 2.8.1, ogb 1.3.6). Running the experiment lists and the authors' code is described in [REPORT.md](REPORT.md) §10.
 
+## Citation
+
+If you use this reproduction, please cite it:
+
+```bibtex
+@misc{detroja2026reachorsize,
+  author       = {Detroja, Vraj},
+  title        = {Reach or size? Reproducing {GNN+} and testing why {RWSE} helps},
+  year         = {2026},
+  howpublished = {\url{https://github.com/vrajdetroja/reach-or-size}},
+  note         = {GitHub repository}
+}
+```
+
+and the original paper:
+
+```bibtex
+@inproceedings{luo2025classic,
+  author    = {Luo, Yuankai and Shi, Lei and Wu, Xiao-Ming},
+  title     = {Can Classic {GNNs} Be Strong Baselines for Graph-level Tasks? Simple Architectures Meet Excellence},
+  booktitle = {Proceedings of the 42nd International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {267},
+  year      = {2025}
+}
+```
+
+GitHub's "Cite this repository" button reads the same information from [CITATION.cff](CITATION.cff).
+
 ## License
 
 MIT, see [LICENSE](LICENSE). The paper's reported numbers in `configs/paper/` and `CLAIMS.md` are quoted from Luo, Shi & Wu (ICML 2025) for comparison.

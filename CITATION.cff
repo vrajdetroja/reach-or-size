@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this reproduction, please cite it as below, and cite the original GNN+ paper as well."
+type: software
+title: "Reach or size? Reproducing GNN+ and testing why RWSE helps"
+authors:
+  - family-names: Detroja
+    given-names: Vraj
+date-released: "2026-10-24"
+repository-code: "https://github.com/vrajdetroja/reach-or-size"
+url: "https://github.com/vrajdetroja/reach-or-size"
+license: MIT
+abstract: >-
+  A blind reproduction of GNN+ (Luo, Shi and Wu, ICML 2025) on Peptides-func,
+  Peptides-struct and ogbg-molhiv with GCN+ and GatedGCN+, and a preregistered
+  test of why random-walk structural encodings (RWSE) help.
+keywords:
+  - graph neural networks
+  - reproducibility
+  - positional encodings
+  - long-range graph benchmark
+references:
+  - type: conference-paper
+    title: "Can Classic GNNs Be Strong Baselines for Graph-level Tasks? Simple Architectures Meet Excellence"
+    authors:
+      - family-names: Luo
+        given-names: Yuankai
+      - family-names: Shi
+        given-names: Lei
+      - family-names: Wu
+        given-names: Xiao-Ming
+    year: 2025
+    collection-title: "Proceedings of the 42nd International Conference on Machine Learning"
+    conference:
+      name: "International Conference on Machine Learning (ICML)"
+    volume: 267
+    url: "https://arxiv.org/abs/2502.09263"
